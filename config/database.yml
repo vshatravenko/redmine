@@ -1,0 +1,21 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASS'] %>
+
+development:
+  <<: *default
+  database: redmine_development
+
+test:
+  <<: *default
+  database: redmine_test
+
+production:
+  <<: *default
+  pool: 10
+  database: redmine_production
+# url: <%= ENV['DATABASE_URL'] %>
