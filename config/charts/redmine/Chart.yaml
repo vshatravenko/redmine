@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Redmine chart
+name: redmine
+version: 4.0.0
