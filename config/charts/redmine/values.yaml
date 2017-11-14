@@ -35,3 +35,11 @@ resources: {}
   #requests:
   #  cpu: 100m
   #  memory: 128Mi
+app:
+  env:
+    - name: DATABASE_HOST
+      value: redmine-mariadb
+    - name: DATABASE_USER
+      value: root
+    - name: DATABASE_PASSWORD
+      value: changeme
