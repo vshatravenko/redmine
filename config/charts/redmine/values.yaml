@@ -43,3 +43,5 @@ app:
       value: root
     - name: DATABASE_PASSWORD
       value: changeme
+    - name: SECRET_KEY_BASE
+      value: changemeplease
