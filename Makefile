@@ -14,7 +14,8 @@ push: build
 
 run:
 	@echo '> Starting "redmine" container...'
-	@docker run -d $(IMAGE)
+	@docker run -d --env=MYSQL_ROOT_PASSWORD=changeme --name=redmine-mariadb -p 3306:3306 mysql:5.7
+	@docker run -p 8080:8080 --link redmine-mariadb:redmine-mariadb -e "DATABASE_HOST=redmine-mariadb" -e "DATABASE_USER=root" -e "DATABASE_PASSWORD=changeme" -d $(IMAGE)
 
 ci:
 	@fly -t ci set-pipeline -p redmine -c config/pipelines/review.yml -n
