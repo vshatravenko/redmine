@@ -2,9 +2,10 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  host: <%= ENV['DATABASE_HOST'] %>
+  host:     <%= ENV['DATABASE_HOST'] %>
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASS'] %>
+  socket:   <%= ('/cloudsql/' + ENV['CLOUDSQL_CONN']) unless ENV['CLOUDSQL_CONN'].nil? %>
 
 development:
   <<: *default

@@ -32,12 +32,14 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 app:
+  cloudSqlInstance: hc-public:europe-west1:redmine-db
   env:
     - name: DATABASE_HOST
-      value: redmine-mysql
-    - name: DATABASE_USER
-      value: root
-    - name: DATABASE_PASSWORD
-      value: changeme
+      value: 127.0.0.1
     - name: SECRET_KEY_BASE
       value: changeme
+#   For production, use values from cloudsql-db-creds secret
+#   - name: DATABASE_USER
+#     value: root
+#   - name: DATABASE_PASSWORD
+#     value: changeme

@@ -15,6 +15,15 @@ spec:
         app: {{ template "name" . }}
         release: {{ .Release.Name }}
     spec:
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-creds
+        - name: cloudsql
+          emptyDir:
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -22,7 +31,32 @@ spec:
           command: ["bundle", "exec", "rake", "db:create", "db:migrate"]
           env:
 {{ toYaml .Values.app.env | indent 12 }}
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-creds
+                  key: username
+            - name: DATABASE_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-creds
+                  key: password
+            - name: CLOUDSQL_CONN
+              value: {{ .Values.app.cloudSqlInstance }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy", "--dir=/cloudsql",
+          "-instances={{ .Values.app.cloudSqlInstance }}=tcp:3306",
+          "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+            - name: cloudsql
+              mountPath: /cloudsql
       restartPolicy: Never
 {{- end }}

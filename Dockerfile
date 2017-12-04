@@ -10,6 +10,7 @@ RUN useradd -r -m -g app -d /home/app --uid=1000 app
 # RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 
 RUN apt-get update && apt-get install -y \
+  vim \
   libmysqlclient-dev \
   imagemagick git \
   && rm -rf /var/lib/apt/lists/*
