@@ -33,6 +33,9 @@ module RedmineApp
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
+    # Secret key base for production env
+    config.secret_key_base = ENV["SECRET_KEY_BASE"]
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
